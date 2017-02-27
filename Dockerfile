@@ -1,6 +1,6 @@
 FROM nginx:mainline-alpine
 
-MAINTAINER ngineered <support@ngineered.co.uk>
+MAINTAINER bitcloud <jan@jschmidle.org>
 
 ENV php_conf /etc/php7/php.ini 
 ENV fpm_conf /etc/php7/php-fpm.d/www.conf
@@ -119,23 +119,18 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 RUN cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Add Scripts
-ADD scripts/start.sh /start.sh
-ADD scripts/pull /usr/bin/pull
-ADD scripts/push /usr/bin/push
-ADD scripts/letsencrypt-setup /usr/bin/letsencrypt-setup
-ADD scripts/letsencrypt-renew /usr/bin/letsencrypt-renew
-ADD scripts/docker-hook /usr/bin/docker-hook
-ADD scripts/hook-listener /usr/bin/hook-listener
+ADD scripts/start.sh /usr/bin/start.sh
+ADD scripts/check.sh /usr/bin/check.sh
+ADD scripts/gitautopull.sh /usr/bin/gitautopull.sh
 
 # Setup permissions
-RUN chmod 755 /usr/bin/pull && chmod 755 /usr/bin/push && chmod 755 /usr/bin/letsencrypt-setup && chmod 755 /usr/bin/letsencrypt-renew && chmod 755 /start.sh
-RUN chmod +x /usr/bin/docker-hook
-RUN chmod +x /usr/bin/hook-listener
+RUN chmod 755 /usr/bin/start.sh /usr/bin/check.sh /usr/bin/gitautopull.sh
+RUN chmod +x /usr/bin/start.sh /usr/bin/check.sh /usr/bin/gitautopull.sh
 
 # copy in code
 ADD src/ /var/www/html/
 
-EXPOSE 443 80 8555
+EXPOSE 443 80
 
 #CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
-CMD ["/start.sh"]
+CMD ["/usr/bin/start.sh"]
