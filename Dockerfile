@@ -2,19 +2,20 @@ FROM nginx:mainline-alpine
 
 MAINTAINER bitcloud <jan@jschmidle.org>
 
-ENV php_conf /etc/php7/php.ini 
+ENV php_conf /etc/php7/php.ini
 ENV fpm_conf /etc/php7/php-fpm.d/www.conf
 
 RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
     sed -i -e "s/v3.4/edge/" /etc/apk/repositories && \
     echo /etc/apk/respositories && \
     apk update && \
-    apk add --no-cache bash \ 
+    apk add --no-cache bash \
     openssh-client \
     wget \
     nginx \
     supervisor \
     curl \
+    jq \
     git \
     php7-fpm \
     php7-pdo \
@@ -61,7 +62,7 @@ RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repo
     pip install -U certbot && \
     mkdir -p /etc/letsencrypt/webrootauth && \
     apk del gcc musl-dev linux-headers libffi-dev augeas-dev python-dev
-    
+
 ADD conf/supervisord.conf /etc/supervisord.conf
 
 # Copy our nginx config
@@ -128,7 +129,7 @@ RUN chmod 755 /usr/bin/start.sh /usr/bin/check.sh /usr/bin/gitautopull.sh
 RUN chmod +x /usr/bin/start.sh /usr/bin/check.sh /usr/bin/gitautopull.sh
 
 # copy in code
-ADD src/ /var/www/html/
+ADD src/ /var/www/src/
 
 EXPOSE 443 80
 

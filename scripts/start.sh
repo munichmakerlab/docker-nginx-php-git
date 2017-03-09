@@ -39,5 +39,9 @@ fi
 # Always chown webroot for better mounting
 chown -Rf nginx.nginx /var/www/html
 
+if [ ! -f /var/html/info.php ]; then
+  cp /var/www/src/* /var/www/html
+fi
+
 # Start supervisord and services
 /usr/bin/supervisord -n -c /etc/supervisord.conf
