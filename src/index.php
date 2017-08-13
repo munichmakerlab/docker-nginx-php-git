@@ -14,7 +14,7 @@ while(false !== ($entry = $d->read())) {
   // skip hidden files
   if($entry[0] == ".") continue;
   if(is_dir("$entry")) {
-    echo '<a href="/$entry">'.$entry.'</a><br>';
+    echo '<a href="/'.$entry.'">'.$entry.'</a><br>';
   }
 }
 $d->close();
