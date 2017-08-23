@@ -109,7 +109,7 @@ RUN sed -i \
 RUN pip install requests
 
 # Add PHP symbolic link to be able to use in CLI
-RUN ln -s /usr/bin/php7 /usr/bin/php
+RUN ln -s /usr/bin/php7 /usr/bin/php; ls -la /usr/bin/php
 
 # Install WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

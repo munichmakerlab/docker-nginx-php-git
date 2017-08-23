@@ -10,7 +10,7 @@ WEBROOT="/var/www/html"
 # helper functions
 
 uri_escape() {
-  echo -E "$@" | perl -MURI::Escape -ne 'chomp; print uri_escape($_)'
+  php -r "echo urlencode(\"$@\");"
 }
 
 # prepare request
